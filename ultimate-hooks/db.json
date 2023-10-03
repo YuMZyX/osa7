@@ -1,0 +1,37 @@
+{
+  "notes": [
+    {
+      "content": "If it hurts, do it more often",
+      "id": 12345
+    },
+    {
+      "content": "Adding manpower to a late software project makes it later!",
+      "id": 64321
+    },
+    {
+      "content": "Custom hooks are awesome",
+      "id": 64322
+    },
+    {
+      "content": "Testing...",
+      "id": 64323
+    }
+  ],
+  "persons": [
+    {
+      "name": "Joni Koskinen",
+      "number": "040-1234567",
+      "id": 48456
+    },
+    {
+      "name": "Jorma Uotinen",
+      "number": "045-9988779",
+      "id": 45612
+    },
+    {
+      "name": "Anni Niemi",
+      "number": "041-1111333",
+      "id": 48457
+    }
+  ]
+}
