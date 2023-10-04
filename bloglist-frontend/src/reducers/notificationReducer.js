@@ -16,7 +16,7 @@ const notificationSlice = createSlice({
   },
 })
 
-export const setNotification = (content, type) => {
+export const setNotification = (content) => {
   return async (dispatch) => {
     dispatch(notify(content))
     setTimeout(() => {

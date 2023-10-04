@@ -1,70 +1,70 @@
-const _ = require("lodash");
+const _ = require('lodash')
 
-const dummy = (blogs) => {
+const dummy = () => {
   // eslint-disable-line
-  return 1;
-};
+  return 1
+}
 
 const totalLikes = (blogs) => {
-  return blogs.reduce((sum, blog) => sum + blog.likes, 0);
-};
+  return blogs.reduce((sum, blog) => sum + blog.likes, 0)
+}
 
 const favoriteBlog = (blogs) => {
   if (Object.keys(blogs).length === 0) {
-    return null;
+    return null
   }
 
-  const mostLikes = Math.max(...blogs.map((blog) => blog.likes));
-  const mostLikedBlog = blogs.find((blog) => blog.likes === mostLikes);
+  const mostLikes = Math.max(...blogs.map((blog) => blog.likes))
+  const mostLikedBlog = blogs.find((blog) => blog.likes === mostLikes)
 
   const blog = {
     title: mostLikedBlog.title,
     author: mostLikedBlog.author,
     likes: mostLikedBlog.likes,
-  };
+  }
 
-  return blog;
-};
+  return blog
+}
 
 const mostBlogs = (blogs) => {
   if (Object.keys(blogs).length === 0) {
-    return null;
+    return null
   }
 
-  const authors = _.mapValues(blogs, "author");
+  const authors = _.mapValues(blogs, 'author')
   const authorWithMostBlogs = _.head(
     _(authors).countBy().entries().maxBy(_.last),
-  );
+  )
 
   const blogCount = Object.values(authors).filter(
     (author) => author === authorWithMostBlogs,
-  ).length;
+  ).length
 
   const author = {
     author: authorWithMostBlogs,
     blogs: blogCount,
-  };
+  }
 
-  return author;
-};
+  return author
+}
 
 const mostLikes = (blogs) => {
   if (Object.keys(blogs).length === 0) {
-    return null;
+    return null
   }
 
   const authors = _(blogs)
-    .groupBy("author")
+    .groupBy('author')
     .map((blogs, key) => ({
       author: key,
-      likes: _.sumBy(blogs, "likes"),
+      likes: _.sumBy(blogs, 'likes'),
     }))
-    .value();
+    .value()
 
-  const authorWithMostLikes = _.maxBy(authors, "likes");
+  const authorWithMostLikes = _.maxBy(authors, 'likes')
 
-  return authorWithMostLikes;
-};
+  return authorWithMostLikes
+}
 
 module.exports = {
   dummy,
@@ -72,4 +72,4 @@ module.exports = {
   favoriteBlog,
   mostBlogs,
   mostLikes,
-};
+}

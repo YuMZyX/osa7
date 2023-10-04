@@ -11,7 +11,6 @@ const Notification = () => {
   }
 
   const style = {
-    color: notification.type === 'error' ? 'red' : 'green',
     background: 'lightgrey',
     fontSize: 20,
     borderStyle: 'solid',
@@ -20,7 +19,7 @@ const Notification = () => {
     marginBottom: 10,
   }
 
-  return <div style={style}>{notification.message}</div>
+  return <div style={style}>{notification}</div>
 }
 
 export default Notification

@@ -1,22 +1,27 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
-const BlogForm = ({ createBlog, notification }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+
+const BlogForm = () => {
+  const dispatch = useDispatch()
 
   const addBlog = (event) => {
     event.preventDefault()
-    createBlog({
+    const title = event.target.title.value
+    const author = event.target.author.value
+    const url = event.target.url.value
+    const blog = ({
       title: title,
       author: author,
       url: url,
     })
-    notification(`A new blog: ${title} was added`)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    dispatch(createBlog(blog))
+    dispatch(setNotification(`A new blog: ${title} was added`))
+    document.getElementById('title').value = ''
+    document.getElementById('author').value = ''
+    document.getElementById('url').value = ''
   }
 
   return (
@@ -25,45 +30,22 @@ const BlogForm = ({ createBlog, notification }) => {
       <form onSubmit={addBlog}>
         <div>
           Title:
-          <input
-            value={title}
-            id="titleInput"
-            name="Title"
-            onChange={(event) => setTitle(event.target.value)}
-            placeholder="input title"
-          />
+          <input id="title" name="title" />
         </div>
         <div>
           Author:
-          <input
-            value={author}
-            id="authorInput"
-            name="Author"
-            onChange={(event) => setAuthor(event.target.value)}
-            placeholder="input author"
-          />
+          <input id="author" name="author" />
         </div>
         <div>
           Url:
-          <input
-            value={url}
-            id="urlInput"
-            name="Url"
-            onChange={(event) => setUrl(event.target.value)}
-            placeholder="input url"
-          />
+          <input id="url" name="url" />
         </div>
-        <button id="createBlog" type="submit">
+        <button type="submit">
           Create
         </button>
       </form>
     </div>
   )
-}
-
-BlogForm.propTypes = {
-  createBlog: PropTypes.func.isRequired,
-  notification: PropTypes.func.isRequired,
 }
 
 export default BlogForm
