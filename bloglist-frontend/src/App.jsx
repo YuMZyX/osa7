@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
 import BlogList from './components/BlogList'
 import blogService from './services/blogs'
@@ -9,12 +9,18 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import { initializeBlogs } from './reducers/blogReducer'
+import { setUser, logout } from './reducers/userReducer'
 
 const App = () => {
-  const [user, setUser] = useState(null)
-  const [render, setRender] = useState('')
-  
+
   const dispatch = useDispatch()
+  const user = useSelector(state => {
+    console.log(state.login)
+    if (state.login === null) {
+      return null
+    }
+    return state.login
+  })
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -24,13 +30,12 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      dispatch(setUser(user))
       blogService.setToken(user.token)
     }
   }, [])
-  
-  const blogFormRef = useRef()
 
+  /*
   const handleLogin = async (username, password) => {
     try {
       const user = await loginService.login({
@@ -49,26 +54,16 @@ const App = () => {
     window.localStorage.removeItem('loggedBloglistUser')
     setUser(null)
   }
-
-  /*
-  const deleteBlog = (id) => {
-    const blog = blogs.find((b) => b.id === id)
-    if (window.confirm(`Remove ${blog.title}`)) {
-      blogService.remove(id).then(() => {
-        setRender(Math.random())
-        dispatch(setNotification(`Deleted ${blog.title}`))
-      })
-    } else {
-      console.log('Deleting a blog was cancelled')
-    }
-  }
   */
 
-  if (user === null) {
+  const blogFormRef = useRef()
+  //console.log(user)
+
+  if (user === null || Object.keys(user).length === 0) {
     return (
       <div>
         <Notification />
-        <LoginForm onLogin={handleLogin} />
+        <LoginForm />
       </div>
     )
   }
@@ -77,14 +72,16 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       <Notification />
-      {user.name} logged in <button onClick={handleLogout}>Logout</button>
+      {user.name} logged in <button onClick={() => dispatch(logout())}>Logout</button>
       <br />
       <br />
       <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
         <BlogForm />
       </Togglable>
       <br />
-      <BlogList />
+      <BlogList
+        user={user}
+      />
     </div>
   )
 }

@@ -1,27 +1,32 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { likeBlog } from '../reducers/blogReducer'
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
-const Blog = () => {
-  const [blogVisible, setBlogVisible] = useState(false)
-
-  const hideWhenVisible = { display: blogVisible ? 'none' : '' }
-  const showWhenVisible = { display: blogVisible ? '' : 'none' }
-  const blogs = useSelector(({ blogs }) => {
-    return blogs
-  })
+const BlogList = ({ user }) => {
   const dispatch = useDispatch()
+  const blogs = useSelector(state => state.blogs)
 
-  const toggleVisibility = () => {
-    setBlogVisible(!blogVisible)
+  const toggleVisibility = (id, type) => {
+    if (type === 'view') {
+      document.getElementById(id + '1').style.display = 'none'
+      document.getElementById(id + '2').style.display = ''
+    } else if (type === 'hide') {
+      document.getElementById(id + '1').style.display = ''
+      document.getElementById(id + '2').style.display = 'none'
+    }
   }
 
   const update = (blog) => {
     dispatch(likeBlog(blog))
+    dispatch(setNotification(`You liked: ${blog.title}`))
   }
 
   const remove = (blog) => {
-    //deleteBlog(blog.id)
+    if (window.confirm(`Remove ${blog.title}`)) {
+      dispatch(removeBlog(blog))
+      dispatch(setNotification(`You deleted: ${blog.title}`))
+    }
   }
 
   const blogStyle = {
@@ -32,59 +37,34 @@ const Blog = () => {
     marginBottom: 5,
   }
 
-  const showRemoveButton = (blog) => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
-    const user = JSON.parse(loggedUserJSON)
-    if (!user) {
-      return
-    }
-    if (blog.user.username === user.username) {
-      return (
-        <div>
-          <button onClick={remove(blog)}>Remove</button>
-        </div>
-      )
-    }
+  const style = {
+    display: 'none'
   }
 
   return (
     <div>
-      {[...blogs].sort((a,b) => b.likes - a.likes)
-      .map(blog => 
+      {[...blogs].sort((a,b) => b.likes - a.likes).map(blog => 
         <div style={blogStyle} key={blog.id}>
-          {blog.title}
-          <br />
-          {blog.url}
-          <br />
-          Likes:&nbsp; {blog.likes} &nbsp;<button onClick={() => update(blog)}>Like</button>
-          <br />
-          {blog.author}
+          <div id={blog.id.concat('1')}>
+            {blog.title}
+            <button onClick={() => toggleVisibility(blog.id, 'view')}>
+              View
+            </button>
+          </div>
+          <div style={style} id={blog.id.concat('2')}>
+            {blog.title}
+            <button onClick={() => toggleVisibility(blog.id, 'hide')}>
+              Hide
+            </button>
+            <div><a href={blog.url}>{blog.url}</a></div>
+            <div>Likes: {blog.likes} <button onClick={() => update(blog)}>Like</button></div>
+            <div>{blog.user && blog.user.name}</div>
+            {blog.user.username === user.username&& <button onClick={() => remove(blog)}>Remove</button>}
+          </div>
         </div>
       )}
     </div>
   )
 }
 
-/*
-{blogs.map(blog => 
-      <div style={blogStyle}>
-        <div key={blog.id}>
-          <div style={hideWhenVisible}>
-            {blog.title} <button onClick={toggleVisibility}>View</button>
-          </div>
-          <div style={showWhenVisible}>
-            {blog.title} <button onClick={toggleVisibility}>Hide</button>
-            <br />
-            {blog.url}
-            <br />
-            Likes:&nbsp; {blog.likes} &nbsp;<button onClick={update(blog)}>Like</button>
-            <br />
-            {blog.author}
-            {showRemoveButton(blog)}
-          </div>
-        </div>
-      </div>
-      )}
-*/
-
-export default Blog
+export default BlogList
