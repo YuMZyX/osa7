@@ -25,7 +25,7 @@ const userSlice = createSlice({
 export const login = (username, password) => {
   return async dispatch => {
     try {
-      const user = loginService.login({ username, password })
+      const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedBloglistUser', JSON.stringify(user))
       blogService.setToken(user.token)
       dispatch(setUser(user))

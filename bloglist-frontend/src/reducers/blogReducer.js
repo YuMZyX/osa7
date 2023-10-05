@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blogs'
+import { setUser } from './userReducer'
 
 const initialState = []
 
@@ -49,6 +50,7 @@ export const likeBlog = (blog) => {
   return async dispatch => {
     const changedBlog = await blogService.update(toLike.id, toLike)
     dispatch(updateBlog(changedBlog))
+    dispatch(initializeBlogs())
   }
 }
 

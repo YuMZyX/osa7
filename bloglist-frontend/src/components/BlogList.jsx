@@ -1,7 +1,9 @@
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import {
+  Link
+} from "react-router-dom"
 
 const BlogList = ({ user }) => {
   const dispatch = useDispatch()
@@ -46,6 +48,36 @@ const BlogList = ({ user }) => {
       {[...blogs].sort((a,b) => b.likes - a.likes).map(blog => 
         <div style={blogStyle} key={blog.id}>
           <div id={blog.id.concat('1')}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            <button onClick={() => toggleVisibility(blog.id, 'view')}>
+              View
+            </button>
+          </div>
+          <div style={style} id={blog.id.concat('2')}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            <button onClick={() => toggleVisibility(blog.id, 'hide')}>
+              Hide
+            </button>
+            <div><a href={blog.url}>{blog.url}</a></div>
+            <div>Likes: {blog.likes} <button onClick={() => update(blog)}>Like</button></div>
+            <div>{blog.user.name}</div>
+            {blog.user.username === user.username&& <button onClick={() => remove(blog)}>Remove</button>}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default BlogList
+
+
+
+/*
+<div>
+      {[...blogs].sort((a,b) => b.likes - a.likes).map(blog => 
+        <div style={blogStyle} key={blog.id}>
+          <div id={blog.id.concat('1')}>
             {blog.title}
             <button onClick={() => toggleVisibility(blog.id, 'view')}>
               View
@@ -58,13 +90,10 @@ const BlogList = ({ user }) => {
             </button>
             <div><a href={blog.url}>{blog.url}</a></div>
             <div>Likes: {blog.likes} <button onClick={() => update(blog)}>Like</button></div>
-            <div>{blog.user && blog.user.name}</div>
+            <div>{blog.author}</div>
             {blog.user.username === user.username&& <button onClick={() => remove(blog)}>Remove</button>}
           </div>
         </div>
       )}
     </div>
-  )
-}
-
-export default BlogList
+*/
