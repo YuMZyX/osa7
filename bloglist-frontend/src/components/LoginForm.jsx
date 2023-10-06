@@ -1,24 +1,22 @@
-import { useDispatch } from 'react-redux'
-import { login } from '../reducers/userReducer'
-import {
-  useNavigate
-} from "react-router-dom"
-import { Table, Form, Button, Alert, Navbar, Nav } from 'react-bootstrap'
+import { useDispatch } from "react-redux";
+import { login } from "../reducers/userReducer";
+import { useNavigate } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
 
 const LoginForm = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
-    event.preventDefault()
-    const username = event.target.username.value
-    const password = event.target.password.value
-    dispatch(login(username, password))
-    navigate('/')
-  }
+    event.preventDefault();
+    const username = event.target.username.value;
+    const password = event.target.password.value;
+    dispatch(login(username, password));
+    navigate("/");
+  };
 
   return (
-    <div className='container'>
+    <div>
       <h2>Log in to application</h2>
       <br />
       <Form onSubmit={handleSubmit}>
@@ -34,7 +32,7 @@ const LoginForm = () => {
         </Form.Group>
       </Form>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
