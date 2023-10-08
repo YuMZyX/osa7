@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { Alert } from "react-bootstrap";
 
 const Notification = () => {
   const notification = useSelector(({ notification }) => {
@@ -18,7 +19,7 @@ const Notification = () => {
     marginBottom: 10,
   };
 
-  return <div style={style}>{notification}</div>;
+  return <Alert>{notification}</Alert>
 };
 
 export default Notification;

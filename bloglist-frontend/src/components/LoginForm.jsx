@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../reducers/userReducer";
 import { useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
+import Notification from "./Notification";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const LoginForm = () => {
   return (
     <div>
       <h2>Log in to application</h2>
+      <Notification />
       <br />
       <Form onSubmit={handleSubmit}>
         <Form.Group>

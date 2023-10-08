@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { likeBlog } from "../reducers/blogReducer";
 import { setNotification } from "../reducers/notificationReducer";
 import { useDispatch } from "react-redux";
+import { Button } from "react-bootstrap";
 
 const Blog = ({ blogs }) => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const Blog = ({ blogs }) => {
       <h2>{blog.title}</h2>
       <a href={blog.url}>{blog.url}</a>
       <br />
-      {blog.likes} likes <button onClick={() => update(blog)}>Like</button>
+      {blog.likes} likes <Button variant="primary" size="sm" onClick={() => update(blog)}>Like</Button>
       <br />
       Added by {blog.user.name}
     </div>

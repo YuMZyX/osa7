@@ -53,7 +53,6 @@ const App = () => {
   if (user === null || Object.keys(user).length === 0) {
     return (
       <div className="container">
-        <Notification />
         <LoginForm />
       </div>
     );
